@@ -1,5 +1,5 @@
 from collections import deque
-
+import copy
 
 class dados_conta:
   def __init__(self):
@@ -105,7 +105,7 @@ class contas:
       else:
         lista = [compra,acao1]
         fila.d.append(lista)
-        fila.pilha_reserva.append(fila.d.copy())
+        fila.pilha_reserva.append(copy.deepcopy(fila.d))
         print ("TRANSAÇÃO EFETUADA COM SUCESSO.")
     except ValueError:
       print("NECESSÁRIO DIGITAR COMPRA E ACÕES.\n"
@@ -127,10 +127,12 @@ class contas:
         valor2 = venda * acao2
         fila.d[0][1] = fila.d[0][1] - acao2
         self.saldo = valor2 - valor1 + self.saldo
+        valor_acumulado += valor2 - valor1
 
       elif fila.d[0][1] == acao2:
         valor1 = fila.d[0][0] * fila.d[0][1]
         valor2 = venda * acao2
+        valor_acumulado += valor2 - valor1
         self.saldo = valor2 - valor1 + self.saldo
         fila.d.pop(0)
 
@@ -142,7 +144,7 @@ class contas:
         acao2 = acao2 - fila.d[0][1]
         fila.d.pop(0)
 
-    self.ganhos (valor_acumulado)
+    self.ganhos(valor_acumulado)
 
   def vender_acao_menor(self,venda,acao2):
     valor1 = fila.d[0][0] * acao2
